@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>东秦日升-教练详细信息</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+
+<body>
+   <form class="layui-form"  th:action="@{/edit}" th:object="${coachInfo}"  method="post">
+
+
+       <div class="layui-form-item" style="margin-top: 20px;">
+
+        <label class="layui-form-label">教练账号：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="coachId" id="coachId"  th:value="*{coachId}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   
+	    <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练昵称：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="nickName" id="nickName" th:value="*{nickName}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练手机号：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练姓名：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="fullName" id="fullName" th:value="*{fullName}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练性别：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="sex" id="sex" th:value="*{sex}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练星级：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="star" id="star" th:value="*{star}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练简介：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="introduction" id="introduction" th:value="*{introduction}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+
+   </form>
+
+</body>
+</html>

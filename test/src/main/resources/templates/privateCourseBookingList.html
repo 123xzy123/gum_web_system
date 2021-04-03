@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>东秦日升-私教课程预约</title>
+    <script>
+        function deletePrivateCourseBooking(bookingId) {
+            alert(bookingId)
+        }
+    </script>
+
+</head>
+
+<body>
+<div style="text-align: center">
+    <h1>私教课程预约信息查看</h1>
+    <br/>
+    <table align="center" border="1px" cellspacing="0" width="500px" style="text-align: center;margin:0 auto;">
+        <tr>
+            <th>编号</th>
+            <th>用户编号</th>
+            <th>用户姓名</th>
+            <th>教练编号</th>
+			<th>教练姓名</th>
+			<th>开始时间</th>
+			<th>结束时间</th>
+			<th>备注</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="privateCourseBooking : ${privateCourseBookingList}">
+			<td th:text="${privateCourseBooking.bookingId}"></td>
+            <td th:text="${privateCourseBooking.userId}"</td>
+            <td th:text="${privateCourseBooking.userName}"></td>
+            <td th:text="${privateCourseBooking.coachId}"></td>
+            <td th:text="${privateCourseBooking.coachName}"></td>
+			<td th:text="${privateCourseBooking.beginTime}"></td>
+			<td th:text="${privateCourseBooking.endTime}"></td>
+			<td th:text="${privateCourseBooking.remark}"></td>
+            <td>
+                <button type="button"  th:onclick="'javascript:updatePrivateCourseBooking('+${privateCourseBooking.bookingId}+')' ">修改</button>
+            </td>
+			
+            <td>
+                <button type="button"  th:onclick="'javascript:deletePrivateCourseBooking('+${privateCourseBooking.bookingId}+')' ">删除</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

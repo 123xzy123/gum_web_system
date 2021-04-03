@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>教练信息修改</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+</head>
+
+<body>
+
+   <form class="layui-form"  th:action="@{/edit}" th:object="${coachInfo}" id="coachInfoFrom"  method="post">
+
+		<div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">教练账号(不可修改)：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="coachId" id="coachId"  th:value="*{coachId}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练昵称：</label>
+           <div class="layui-input-block">
+               <input type="text" name="nickName" id="nickName" th:value="*{nickName}" style="width: 400px;" placeholder="请输入教练昵称"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练手机号：</label>
+           <div class="layui-input-block">
+               <input type="number" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" style="width: 400px;" placeholder="请输入教练11位手机号"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练姓名：</label>
+           <div class="layui-input-block">
+               <input type="text" name="fullName" id="fullName" th:value="*{fullName}" style="width: 400px;" placeholder="请输入教练姓名"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练性别：</label>
+           <div class="layui-input-block">
+               <input type="text" name="sex" id="sex" th:value="*{sex}" style="width: 400px;" placeholder="请输入教练性别"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练星级：</label>
+           <div class="layui-input-block">
+               <input type="number" name="star" id="star" th:value="*{star}" style="width: 400px;" placeholder="请输入教练星级"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练简介：</label>
+           <div class="layui-input-block">
+               <input type="text" name="introduction" id="introduction" th:value="*{introduction}" style="width: 400px;" placeholder="请输入教练简介"  class="layui-input">
+           </div>
+       </div>
+
+       <div class="layui-form-item">
+           <div class="layui-input-block">
+               <button type="button" class="layui-btn"  th:onclick="'javascript:save()'">确认</button>
+               <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+           </div>
+       </div>
+    </form>
+
+</body>
+
+<script>
+
+    function save(){
+       var coachId = $("#coachId").val(); //教练id
+        var nickName = $("#nickName").val(); //教练昵称
+		var phoneNumber = $("#phoneNumber").val(); //教练手机号
+		var fullName = $("#fullName").val(); //教练姓名
+		var sex = $("#sex").val(); //教练性别
+		var star = $("#star").val(); //教练星级
+		var introduction = $("#introduction").val(); //教练简介
+		
+        if (coachId==""){
+			alert('请输入教练账号！');
+            parent.layer.msg("请输入教练账号");
+            return;
+        }
+        if (nickName==""){
+			alert('请输入用户昵称！')
+            parent.layer.msg("请输入用户昵称");
+            return;
+        }
+		
+		if (phoneNumber=="") {
+			alert('请输入教练手机号！')
+            parent.layer.msg("请输入教练手机号");
+			return;
+		}
+		else if (phoneNumber.length != 11) {
+			alert('教练手机号格式错误！')
+            parent.layer.msg("教练手机号格式错误");
+            return;
+		}
+		
+		if (fullName=="") {
+			alert('请输入教练姓名！')
+            parent.layer.msg("请输入教练姓名");
+			return;
+		}
+		if (sex=="") {
+			alert('请输入教练性别！')
+            parent.layer.msg("请输入教练性别");
+            return;
+		}
+		else if (sex != "男" && sex != "女") {
+			alert('教练性别格式错误(男/女)')
+            parent.layer.msg("教练性别格式错误(男/女)");
+            return;
+		}
+		
+		if (star==null) {
+			star = 3;
+		}
+		
+		if (introduction == "") {
+			alert('请输入教练简介！')
+            parent.layer.msg("请输入教练简介！");
+            return;
+		}
+	
+        //alert('Id:'+userId+",uid:"+complaintUserId+",type:"+complaintType+",msg:"+complaintMessage+",phone:"+phoneNumber+",date:"+complaintDate+",state:"+complaintState);
+        $.ajax({
+            url: "/coachInfoUpdate",
+            type: "POST",
+            data: {
+				"coachId":coachId,
+				"nickName":nickName,
+				"phoneNumber":phoneNumber,
+				"fullName":fullName,
+				"sex":sex,
+				"star":star,
+				"introduction":introduction
+			},
+            dataType: "json",
+            success: function(data){
+                if(data==1){
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                    parent.layer.msg("修改成功", {icon: 6});
+                    parent.location.reload();
+                }else{
+                    parent.layer.msg("修改失败", {icon: 5});
+                }
+            }
+        });
+    }
+
+</script>
+</html>

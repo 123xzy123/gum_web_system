@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.test.mapper.PunchClockMapper">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.PunchClock" >
+        <id column="punch_id" property="punchId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+        <result column="punch_time" property="punchTime" jdbcType="TIMESTAMP" />
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="punch_position" property="punchPosition" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getPunchClockList"  resultMap="BaseResultMap" >
+        SELECT * FROM punch_clock
+        WHERE full_name LIKE CONCAT('%', #{fullName}, '%')
+        ORDER BY punch_time DESC
+        LIMIT #{page},#{limit};
+    </select>
+
+    <select id="getPunchClockListCount"   resultType="Integer">
+        SELECT COUNT(*) FROM punch_clock;
+    </select>
+
+</mapper>

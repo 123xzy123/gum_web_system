@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>报修列表</title>
+    <script>
+        function deleteUserInfo(userId) {
+            alert(userId)
+        }
+    </script>
+
+</head>
+
+<body>
+<div style="text-align: center">
+    <h1>用户信息</h1>
+    <br/>
+    <table align="center" border="1px" cellspacing="0" width="500px" style="text-align: center;margin:0 auto;">
+        <tr>
+            <th>用户账号</th>
+            <th>昵称</th>
+            <th>用户手机号</th>
+			<th>姓名</th>
+			<th>性别</th>
+			<th>会员等级</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="userInfo : ${userInfoList}">
+			<td th:text="${userInfo.userId}"></td>
+            <td th:text="${userInfo.nickName}"></td>
+            <td th:text="${userInfo.phoneNumber}"></td>
+            <td th:text="${userInfo.fullName}"></td>
+			<td th:text="${userInfo.sex}"></td>
+			<td th:text="${userInfo.membershipLevel}"></td>
+            <td>
+                <button type="button"  th:onclick="'javascript:updateUserInfo('+${userInfo.userId}+')' ">修改</button>
+            </td>
+			
+            <td>
+                <button type="button"  th:onclick="'javascript:deleteUserInfo('+${userInfo.userId}+')' ">删除</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

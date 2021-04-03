@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>东秦日升-用户详细信息</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+</head>
+
+<body>
+   <form class="layui-form"  th:action="@{/edit}" th:object="${userInfo}"  method="post">
+
+
+       <div class="layui-form-item" style="margin-top: 20px;">
+
+        <label class="layui-form-label">用户账号：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="userId" id="userId"  th:value="*{userId}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   
+	    <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户昵称：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="nickName" id="nickName" th:value="*{nickName}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户手机号：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户姓名：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="fullName" id="fullName" th:value="*{fullName}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户性别：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="sex" id="sex" th:value="*{sex}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">会员等级：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="membershipLevel" id="membershipLevel" th:value="*{membershipLevel}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">会员到期时间：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="membershipDeadline" id="membershipDeadline" th:value="*{membershipDeadline}" style="width: 400px;" placeholder="非会员"  class="layui-input">
+           </div>
+       </div>
+
+   </form>
+
+</body>
+</html>

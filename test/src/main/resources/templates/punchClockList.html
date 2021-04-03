@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>东秦日升-打卡查看</title>
+    <script>
+        function deleteCourse(id) {
+            alert(id)
+        }
+    </script>
+
+</head>
+
+<body>
+<div style="text-align: center">
+    <h1>打卡查看</h1>
+    <br/>
+    <table align="center" border="1px" cellspacing="0" width="500px" style="text-align: center;margin:0 auto;">
+        <tr>
+            <th>编号</th>
+            <th>用户微信号</th>
+            <th>姓名</th>
+			<th>打卡时间</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="punchClock : ${punchClockList}">
+			<td th:text="${punchClock.punchId}"></td>
+            <td th:text="${punchClock.userId}"></td>
+            <td th:text="${punchClock.fullName}"></td>
+            <td th:text="${punchClock.punchTime}"></td>
+			<!--
+            <td>
+                <button type="button"  th:onclick="'javascript:updateCourse('+${course.id}+')' ">修改</button>
+            </td>
+			-->
+			<!--
+            <td>
+                <button type="button"  th:onclick="'javascript:deleteCourse('+${course.id}+')' ">删除</button>
+            </td>
+			-->
+        </tr>
+    </table>
+</div>
+</body>
+</html>

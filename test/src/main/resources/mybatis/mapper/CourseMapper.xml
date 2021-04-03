@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.test.mapper.CourseMapper">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.Course" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="teacher_name" property="teacherName" jdbcType="VARCHAR" />
+        <result column="brief_introduction" property="briefIntroduction" jdbcType="CLOB" />
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="capacity" property="capacity" jdbcType="INTEGER" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <select id="getCourseList"  resultMap="BaseResultMap" >
+        SELECT * FROM course
+        ORDER BY begin_time DESC
+        LIMIT #{page},#{limit};
+    </select>
+
+    <select id="getCourseListCount"   resultType="Integer">
+        SELECT COUNT(*) FROM course;
+    </select>
+
+    <select id="getCourseById" parameterType="INTEGER" resultMap="BaseResultMap" >
+        SELECT * FROM course
+        WHERE id = #{id};
+    </select>
+
+    <insert id="addCourse" parameterType="com.example.test.entity.Course" > <!--insert update delete默认返回Integer,可省略resultType-->
+        INSERT INTO course(
+        teacher_name,
+        brief_introduction,
+        begin_time,
+        end_time,
+        capacity,
+        price
+        )
+        VALUES(
+        #{course.teacherName},
+        #{course.briefIntroduction},
+        #{course.beginTime},
+        #{course.endTime},
+        #{course.capacity},
+        #{course.price}
+        );
+    </insert>
+
+    <update id="updateCourse" parameterType="com.example.test.entity.Course" >
+        UPDATE course
+        <set>
+            <if test="course.teacherName != null and course.teacherName != '' ">
+                teacher_name = #{course.teacherName},
+            </if>
+            <if test="course.briefIntroduction != null and course.briefIntroduction != '' ">
+                brief_introduction = #{course.briefIntroduction},
+            </if>
+
+            <if test="course.beginTime != null ">
+                begin_time = #{course.beginTime},
+            </if>
+            <if test="course.endTime != null ">
+                end_time = #{course.endTime},
+            </if>
+            <if test="course.capacity != null ">
+                capacity = #{course.capacity},
+            </if>
+
+            <if test="course.price != null ">
+                price = #{course.price},
+            </if>
+        </set>
+        WHERE id = #{course.id};
+    </update>
+
+    <delete id="deleteCourse" parameterType="Integer" >
+        DELETE FROM course
+        WHERE id = #{id};
+    </delete>
+
+</mapper>

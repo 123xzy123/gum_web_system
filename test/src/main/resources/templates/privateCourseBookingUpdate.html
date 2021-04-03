@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>私教课程预约信息修改</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+</head>
+
+<body>
+
+   <form class="layui-form"  th:action="@{/edit}" th:object="${privateCourseBooking}" id="privateCourseBookingForm"  method="post">
+
+      	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">编号(不可修改)：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="bookingId" id="bookingId" style="width: 400px;" th:value="*{bookingId}"  class="layui-input">
+           </div>
+       </div>
+
+       <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户编号(不可修改)：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="userId" id="userId" style="width: 400px;" th:value="*{userId}"  class="layui-input">
+           </div>
+       </div>
+
+	   	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户姓名(不可修改)：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="userName" id="userName" style="width: 400px;" th:value="*{userName}"  class="layui-input">
+           </div>
+       </div>
+	
+	   	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">开始时间：</label>
+           <div class="layui-input-block">
+               <input type="datetime-local" name="beginTime" id="beginTime" style="width: 400px;" th:value="*{beginTime}"  class="layui-input">
+           </div>
+       </div>
+	   
+	   	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">结束时间：</label>
+           <div class="layui-input-block">
+               <input type="datetime-local" name="endTime" id="endTime"  th:value="*{endTime}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>	
+	   
+	    <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">备注：</label>
+           <div class="layui-input-block">
+               <input type="text" name="remark" id="remark"  th:value="*{remark}" style="width: 400px;" placeholder="请输入备注"  class="layui-input">
+           </div>
+       </div>	
+	  
+	  
+	   
+       <div class="layui-form-item">
+           <div class="layui-input-block">
+               <button type="button" class="layui-btn"  th:onclick="'javascript:save()'">确认</button>
+               <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+           </div>
+       </div>
+    </form>
+
+</body>
+
+<script>
+
+    function save(){
+	
+		var bookingId = $("#bookingId").val(); // 预约编号
+        var beginTime = $("#beginTime").val(); // 私教课程开始时间
+		var endTime = $("#endTime").val(); // 私教课程结束时间
+        var remark = $("#remark").val(); // 备注
+		
+		if(remark==""){
+			remark = "无";
+        }
+	
+        //alert('Id:'+complaintId+",uid:"+complaintUserId+",type:"+complaintType+",msg:"+complaintMessage+",phone:"+phoneNumber+",date:"+complaintDate+",state:"+complaintState);
+        $.ajax({
+            url: "/privateCourseBookingUpdate",
+            type: "POST",
+            data: {"bookingId":bookingId,"beginTime":beginTime,"endTime":endTime,"remark":remark},
+            dataType: "json",
+            success: function(data){
+                if(data==1){
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                    parent.layer.msg("修改成功", {icon: 6});
+                    parent.location.reload();
+                }else{
+                    parent.layer.msg("修改失败", {icon: 5});
+                }
+            }
+        });
+    }
+
+</script>
+</html>

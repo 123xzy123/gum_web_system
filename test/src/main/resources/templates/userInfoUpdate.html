@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>用户信息修改</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+</head>
+
+<body>
+
+   <form class="layui-form"  th:action="@{/edit}" th:object="${userInfo}" id="userInfoFrom"  method="post">
+
+		<div class="layui-form-item" style="margin-top: 20px;">
+        <label class="layui-form-label">用户账号：</label>
+           <div class="layui-input-block">
+               <input type="text" readonly="readonly" name="userId" id="userId"  th:value="*{userId}" style="width: 400px;" placeholder="--"  class="layui-input">
+           </div>
+       </div>
+<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户昵称：</label>
+           <div class="layui-input-block">
+               <input type="text" name="nickName" id="nickName" th:value="*{nickName}" style="width: 400px;" placeholder="请输入用户昵称"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户手机号：</label>
+           <div class="layui-input-block">
+               <input type="number" name="phoneNumber" id="phoneNumber" th:value="*{phoneNumber}" style="width: 400px;" placeholder="请输入用户11位手机号"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户姓名：</label>
+           <div class="layui-input-block">
+               <input type="text" name="fullName" id="fullName" th:value="*{fullName}" style="width: 400px;" placeholder="请输入用户姓名"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户性别：</label>
+           <div class="layui-input-block">
+               <input type="text" name="sex" id="sex" th:value="*{sex}" style="width: 400px;" placeholder="请输入用户性别"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">会员等级：</label>
+           <div class="layui-input-block">
+               <input type="number" name="membershipLevel" id="membershipLevel" th:value="*{membershipLevel}" style="width: 400px;" placeholder="请输入用户会员等级"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">会员到期时间：</label>
+           <div class="layui-input-block">
+               <input type="datetime-local" name="membershipDeadline" id="membershipDeadline" th:value="*{membershipDeadline}" style="width: 400px;" placeholder="请输入会员到期时间"  class="layui-input">
+           </div>
+       </div>
+
+       <div class="layui-form-item">
+           <div class="layui-input-block">
+               <button type="button" class="layui-btn"  th:onclick="'javascript:save()'">确认</button>
+               <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+           </div>
+       </div>
+    </form>
+
+</body>
+
+<script>
+
+    function save(){
+        var userId = $("#userId").val(); //用户id
+        var nickName = $("#nickName").val(); //用户昵称
+		var phoneNumber = $("#phoneNumber").val(); //用户手机号
+		var fullName = $("#fullName").val(); //用户姓名
+		var sex = $("#sex").val(); //用户性别
+		var membershipLevel = $("#membershipLevel").val(); //用户会员等级
+		var membershipDeadline = $("#membershipDeadline").val(); //用户会员到期时间
+		
+		if (nickName==""){
+			alert('请输入用户昵称！')
+            parent.layer.msg("请输入用户昵称");
+            return;
+        }
+		
+		if (phoneNumber=="") {
+			phoneNumber = null;
+		}
+		else if (phoneNumber.length != 11) {
+			alert('用户手机号格式错误！')
+            parent.layer.msg("请输入用户手机号");
+            return;
+		}
+		
+		if (fullName=="") {
+			fullName = null;
+		}
+		if (sex=="") {
+			alert('请输入用户性别！')
+            parent.layer.msg("请输入用户性别");
+            return;
+		}
+		
+		if (membershipLevel==null) {
+			membershipLevel = 0;
+		}
+	
+        //alert('Id:'+userId+",uid:"+complaintUserId+",type:"+complaintType+",msg:"+complaintMessage+",phone:"+phoneNumber+",date:"+complaintDate+",state:"+complaintState);
+        $.ajax({
+            url: "/userInfoUpdate",
+            type: "POST",
+            data: {
+				"userId":userId,
+				"nickName":nickName,
+				"phoneNumber":phoneNumber,
+				"fullName":fullName,
+				"sex":sex,
+				"membershipLevel":membershipLevel,
+				"membershipDeadline":membershipDeadline
+			},
+            dataType: "json",
+            success: function(data){
+                if(data==1){
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                    parent.layer.msg("修改成功", {icon: 6});
+                    parent.location.reload();
+                }else{
+                    parent.layer.msg("修改失败", {icon: 5});
+                }
+            }
+        });
+    }
+
+</script>
+</html>

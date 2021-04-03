@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.test.mapper.PrivateCourseBookingMapper">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.PrivateCourseBooking" >
+        <id column="booking_id" property="bookingId" jdbcType="INTEGER" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="coach_id" property="coachId" jdbcType="VARCHAR" />
+        <result column="begin_time" property="beginTime" jdbcType="TIMESTAMP" />
+        <result column="end_time" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="coach_name" property="coachName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getPrivateCourseBookingList"  resultMap="BaseResultMap" >
+        SELECT b.booking_id, b.user_id, u.full_name as 'user_name', b.coach_id, c.full_name as 'coach_name', b.begin_time, b.end_time, b.remark
+        FROM (user_info u RIGHT OUTER JOIN private_course_booking b ON u.user_id = b.user_id) LEFT OUTER JOIN coach_info c ON b.coach_id = c.coach_id
+        <where>
+            <if test='userName!=null and userName!="" '>
+                AND u.full_name LIKE CONCAT('%',#{userName},'%')
+            </if>
+            <if test='coachName!=null and coachName!="" '>
+                AND c.full_name LIKE CONCAT('%',#{coachName},'%')
+            </if>
+        </where>
+        LIMIT #{page}, #{limit};
+    </select>
+
+    <select id="getPrivateCourseBookingListCount"   resultType="Integer">
+        SELECT COUNT(booking_id) FROM private_course_booking;
+    </select>
+
+    <select id="getPrivateCourseBookingById" parameterType="Integer" resultMap="BaseResultMap" >
+        SELECT r.booking_id, r.user_id, u.full_name as 'user_name', r.coach_id, c.full_name as 'coach_name', r.begin_time, r.end_time, r.remark
+        FROM (user_info u
+            RIGHT OUTER JOIN
+                (SELECT * FROM private_course_booking WHERE booking_id = #{bookingId} ) r
+            ON  u.user_id = r.user_id)
+                 LEFT OUTER JOIN
+             coach_info c
+             ON r.coach_id = c.coach_id;
+    </select>
+
+    <insert id="addPrivateCourseBooking" parameterType="com.example.test.entity.PrivateCourseBooking" > <!--insert update delete默认返回Integer,可省略resultType-->
+        INSERT INTO private_course_booking(
+        user_id,
+        coach_id,
+        begin_time,
+        end_time,
+        remark
+        ) VALUES(
+        #{privateCourseBooking.userId},
+        #{privateCourseBooking.coachId},
+        #{privateCourseBooking.beginTime},
+        #{privateCourseBooking.endTime},
+        #{privateCourseBooking.remark}
+        );
+    </insert>
+
+    <update id="updatePrivateCourseBooking" parameterType="com.example.test.entity.PrivateCourseBooking" >
+        UPDATE private_course_booking
+        <set>
+            <if test="privateCourseBooking.beginTime!=null ">
+                begin_time = #{privateCourseBooking.beginTime},
+            </if>
+            <if test="privateCourseBooking.endTime!=null ">
+                end_time = #{privateCourseBooking.endTime},
+            </if>
+
+            <if test="privateCourseBooking.remark!=null and privateCourseBooking.remark!='' ">
+                remark = #{privateCourseBooking.remark},
+            </if>
+        </set>
+        WHERE booking_id = #{privateCourseBooking.bookingId};
+    </update>
+
+    <delete id="deletePrivateCourseBooking" parameterType="Integer" >
+        DELETE FROM private_course_booking
+        WHERE booking_id = #{bookingId};
+    </delete>
+
+</mapper>

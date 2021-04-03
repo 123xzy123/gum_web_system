@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>东秦日生-公开课程</title>
+    <script>
+        function deleteCourse(id) {
+            alert(id)
+        }
+    </script>
+
+</head>
+
+<body>
+<div style="text-align: center">
+    <h1>公开课信息</h1>
+    <br/>
+    <table align="center" border="1px" cellspacing="0" width="500px" style="text-align: center;margin:0 auto;">
+        <tr>
+            <th>课程编号</th>
+            <th>主讲人</th>
+            <th>课程简介</th>
+			<th>课程开始时间</th>
+			<th>课程结束时间</th>
+			<th>课程容量</th>
+			<th>课程价格</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="course : ${courseList}">
+			<td th:text="${course.id}"></td>
+            <td th:text="${course.teacherName}"></td>
+            <td th:text="${course.briefIntroduction}"></td>
+            <td th:text="${course.beginTime}"></td>
+			<td th:text="${course.endTime}"></td>
+			<td th:text="${course.capacity}"></td>
+			<td th:text="${course.price}"></td>
+            <td>
+                <button type="button"  th:onclick="'javascript:updateCourse('+${course.id}+')' ">修改</button>
+            </td>
+			
+            <td>
+                <button type="button"  th:onclick="'javascript:deleteCourse('+${course.id}+')' ">删除</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

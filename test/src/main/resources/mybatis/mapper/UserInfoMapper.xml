@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.test.mapper.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.UserInfo" >
+        <id column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+        <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="membership_level" property="membershipLevel" jdbcType="INTEGER" />
+        <result column="membership_deadline" property="membershipDeadline" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="getUserInfoList"  resultMap="BaseResultMap" parameterType="com.example.test.entity.UserInfo">
+        SELECT * FROM user_info
+        WHERE full_name LIKE CONCAT('%',#{fullName},'%')
+        LIMIT #{page},#{limit};
+    </select>
+
+    <select id="getUserInfoListCount"   resultType="Integer">
+        SELECT COUNT(user_id) FROM user_info;
+    </select>
+
+    <select id="getUserInfoById" parameterType="String" resultMap="BaseResultMap" >
+        SELECT * FROM user_info
+        WHERE user_id = #{userId};
+    </select>
+
+    <insert id="addUserInfo" parameterType="com.example.test.entity.UserInfo" > <!--insert update delete默认返回Integer,可省略resultType-->
+        INSERT INTO user_info(
+            user_id,
+            nick_name,
+            phone_number,
+            full_name,
+            sex,
+            membership_level,
+            membership_deadline
+        )
+        VALUES(
+            #{userInfo.userId},
+            #{userInfo.nickName},
+            #{userInfo.phoneNumber},
+            #{userInfo.fullName},
+            #{userInfo.sex},
+            #{userInfo.membershipLevel},
+            #{userInfo.membershipDeadline}
+        );
+    </insert>
+
+    <update id="updateUserInfo" parameterType="com.example.test.entity.UserInfo" >
+        UPDATE user_info
+        <set>
+            <if test="userInfo.nickName!=null and userInfo.nickName!='' ">
+                nick_name = #{userInfo.nickName},
+            </if>
+            <if test="userInfo.phoneNumber!=null and userInfo.phoneNumber!='' ">
+                phone_number = #{userInfo.phoneNumber},
+            </if>
+
+            <if test="userInfo.fullName!=null and userInfo.fullName!='' ">
+                full_name = #{userInfo.fullName},
+            </if>
+            <if test="userInfo.sex!=null and userInfo.sex!='' ">
+                sex = #{userInfo.sex},
+            </if>
+            <if test="userInfo.membershipLevel!=null ">
+                membership_level = #{userInfo.membershipLevel},
+            </if>
+
+            <if test="userInfo.membershipDeadline!=null ">
+                membership_deadline = #{userInfo.membershipDeadline},
+            </if>
+        </set>
+        WHERE user_id = #{userInfo.userId};
+    </update>
+
+    <delete id="deleteUserInfo" parameterType="String" >
+        DELETE FROM user_info
+        WHERE user_id = #{userId};
+    </delete>
+
+</mapper>

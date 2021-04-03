@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>东秦日升-新增课程</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+</head>
+
+<body>
+   <form class="layui-form"  th:action="@{/edit}" th:object="${course}" id="userInfoFrom"  method="post">
+
+       <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">主讲人姓名：</label>
+           <div class="layui-input-block">
+               <input type="text" name="teacherName" id="teacherName" style="width: 400px;" placeholder="请输入课程主讲人姓名" class="layui-input">
+           </div>
+       </div>
+
+	   	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">课程简介：</label>
+           <div class="layui-input-block">
+               <input type="text" name="briefIntroduction" id="briefIntroduction" style="width: 400px;" placeholder="请输入课程简介"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">课程开始时间：</label>
+           <div class="layui-input-block">
+               <input type="datetime-local" name="beginTime" id="beginTime" style="width: 400px;" placeholder="请输入课程开始时间"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">课程结束时间：</label>
+           <div class="layui-input-block">
+               <input type="datetime-local" name="endTime" id="endTime" style="width: 400px;" placeholder="请输入课程结束时间"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">课程容量：</label>
+           <div class="layui-input-block">
+               <input type="number" name="capacity" id="capacity" style="width: 400px;" placeholder="请输入课程容量"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">课程价格：</label>
+           <div class="layui-input-block">
+               <input type="number" step="0.01" name="price" id="price" style="width: 400px;" placeholder="请输入课程价格"  class="layui-input">
+           </div>
+       </div>
+	   
+       <div class="layui-form-item">
+           <div class="layui-input-block">
+               <button type="button" class="layui-btn"  th:onclick="'javascript:save()'">确认</button>
+               <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+           </div>
+       </div>
+    </form>
+
+</body>
+
+<script>
+
+    function save(){
+        var teacherName = $("#teacherName").val(); //课程主讲人姓名
+        var briefIntroduction = $("#briefIntroduction").val(); //课程简介
+		var beginTime = $("#beginTime").val(); //课程开始时间
+		var endTime = $("#endTime").val(); //课程结束时间
+		var capacity = $("#capacity").val(); //课程容量
+		var price = $("#price").val(); //课程价格
+		
+        if (teacherName==""){
+			alert('请输入课程主讲人姓名！');
+            parent.layer.msg("请输入课程主讲人姓名");
+            return;
+        }
+        if (briefIntroduction==""){
+			alert('请输入课程简介！')
+            parent.layer.msg("请输入课程简介");
+            return;
+        }
+		
+		if (beginTime==null) {
+			alert('请输入课程开始时间！');
+            parent.layer.msg("请输入课程开始时间");
+            return;
+		}
+		
+		if (endTime==null) {
+			alert('请输入课程结束时间！');
+            parent.layer.msg("请输入课程结束时间");
+            return;
+		}
+		
+		if (capacity==null) {
+			alert('请输入课程容量！');
+            parent.layer.msg("请输入课程容量");
+            return;
+		}
+		if (price==null) {
+			alert('请输入课程价格！')
+            parent.layer.msg("请输入课程价格");
+            return;
+		}
+	
+        $.ajax({
+            url: "/courseAdd",
+            type: "POST",
+            data:{
+				"teacherName":teacherName,
+				"briefIntroduction":briefIntroduction,
+				"beginTime":beginTime,
+				"endTime":endTime,
+				"capacity":capacity,
+				"price":price
+			},
+            dataType: "json",
+            success: function(data){
+                if(data==1){
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                    parent.layer.msg("新增成功", {icon: 6});
+                    parent.location.reload();
+                }else{
+                    parent.layer.msg("新增失败", {icon: 5});
+                }
+            }
+        });
+    }
+
+</script>
+</html>

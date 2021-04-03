@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="UTF-8">
+    <title>教练列表</title>
+    <script>
+        function deleteCoachInfo(coachId) {
+            alert(coachId)
+        }
+    </script>
+
+</head>
+
+<body>
+<div style="text-align: center">
+    <h1>教练信息</h1>
+    <br/>
+    <table align="center" border="1px" cellspacing="0" width="500px" style="text-align: center;margin:0 auto;">
+        <tr>
+            <th>教练账号</th>
+            <th>教练昵称</th>
+            <th>教练手机号</th>
+			<th>教练姓名</th>
+			<th>教练性别</th>
+			<th>星级</th>
+			<th>简介</th>
+            <th colspan="2">操作</th>
+        </tr>
+        <tr th:each="coachInfo : ${coachInfoList}">
+			<td th:text="${coachInfo.coachId}"></td>
+            <td th:text="${coachInfo.nickName}"></td>
+            <td th:text="${coachInfo.phoneNumber}"></td>
+            <td th:text="${coachInfo.fullName}"></td>
+			<td th:text="${coachInfo.sex}"></td>
+			<td th:text="${coachInfo.star}"></td>
+			<th th:text="${coachInfo.introduction}"></td>
+            <td>
+                <button type="button"  th:onclick="'javascript:updateCoachInfo('+${coachInfo.coachId}+')' ">修改</button>
+            </td>
+			
+            <td>
+                <button type="button"  th:onclick="'javascript:deleteCoachInfo('+${userInfo.coachId}+')' ">删除</button>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

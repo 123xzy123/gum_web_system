@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.test.mapper.CoachInfoMapper">
+    <resultMap id="BaseResultMap" type="com.example.test.entity.CoachInfo" >
+        <id column="coach_id" property="coachId" jdbcType="VARCHAR" />
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+        <result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+        <result column="full_name" property="fullName" jdbcType="VARCHAR" />
+        <result column="sex" property="sex" jdbcType="VARCHAR" />
+        <result column="introduction" property="introduction" jdbcType="CLOB" />
+        <result column="star" property="star" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="getCoachInfoList"  resultMap="BaseResultMap" >
+        SELECT * FROM coach_info
+        WHERE full_name LIKE CONCAT('%',#{fullName},'%')
+        LIMIT #{page},#{limit};
+    </select>
+
+    <select id="getCoachInfoCount"   resultType="Integer">
+        SELECT COUNT(coach_id) FROM coach_info;
+    </select>
+
+    <select id="getCoachInfoById" parameterType="String" resultMap="BaseResultMap" >
+        SELECT * FROM coach_info
+        WHERE coach_id = #{coachId};
+    </select>
+
+    <insert id="addCoachInfo" parameterType="com.example.test.entity.CoachInfo" > <!--insert update delete默认返回Integer,可省略resultType-->
+        INSERT INTO coach_info(
+        coach_id,
+        nick_name,
+        phone_number,
+        full_name,
+        sex,
+        introduction,
+        star
+        )
+        VALUES(
+        #{coachInfo.coachId},
+        #{coachInfo.nickName},
+        #{coachInfo.phoneNumber},
+        #{coachInfo.fullName},
+        #{coachInfo.sex},
+        #{coachInfo.introduction},
+        #{coachInfo.star}
+        );
+    </insert>
+
+    <update id="updateCoachInfo" parameterType="com.example.test.entity.CoachInfo" >
+        UPDATE coach_info
+        <set>
+            <if test="coachInfo.nickName!=null and coachInfo.nickName!='' ">
+                nick_name = #{coachInfo.nickName},
+            </if>
+            <if test="coachInfo.phoneNumber!=null and coachInfo.phoneNumber!='' ">
+                phone_number = #{coachInfo.phoneNumber},
+            </if>
+            <if test="coachInfo.fullName!=null and coachInfo.fullName!='' ">
+                full_name = #{coachInfo.fullName},
+            </if>
+            <if test="coachInfo.sex!=null and coachInfo.sex!='' ">
+                sex = #{coachInfo.sex},
+            </if>
+            <if test="coachInfo.introduction != null ">
+                introduction = #{coachInfo.introduction},
+            </if>
+
+            <if test="coachInfo.star != null ">
+                star = #{coachInfo.star},
+            </if>
+        </set>
+        WHERE coach_id = #{coachInfo.coachId};
+    </update>
+
+    <delete id="deleteCoachInfo" parameterType="String" >
+        DELETE FROM coach_info
+        WHERE coach_id = #{coachId};
+    </delete>
+
+</mapper>

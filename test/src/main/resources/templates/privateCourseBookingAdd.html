@@ -1,0 +1,127 @@
+ <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>东秦日升-私教课程预约查看</title>
+    <link th:href="@{/layui/css/layui.css}" rel="stylesheet"/>
+    <script th:src="@{/layui/layui.js}"></script>
+    <script th:src="@{/jquery-3.3.1/jquery-3.3.1.js}"></script>
+</head>
+
+<body>
+   <form class="layui-form"  th:action="@{/edit}" th:object="${privateCourseBooking}" id="privateCourseBookingFrom"  method="post">
+
+		<!--
+       	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">预约编号：</label>
+           <div class="layui-input-block">
+               <input type="text" name="bookingId" id="bookingId" style="width: 400px;" placeholder="请输入预约编号"  class="layui-input">
+           </div>
+       </div>
+	   -->
+
+	   	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">用户编号：</label>
+           <div class="layui-input-block">
+               <input type="text" name="userId" id="userId" style="width: 400px;" placeholder="请输入用户编号(微信号)"  class="layui-input">
+           </div>
+       </div>
+	
+	   	<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">教练编号：</label>
+           <div class="layui-input-block">
+               <input type="text" name="coachId" id="coachId" style="width: 400px;" placeholder="请输入教练编号"  class="layui-input">
+           </div>
+       </div>
+
+		<div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">课程开始时间：</label>
+           <div class="layui-input-block">
+               <input type="datetime-local" name="beginTime" id="beginTime" style="width: 400px;" placeholder="请输入预约课程的开始时间"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">课程结束时间：</label>
+           <div class="layui-input-block">
+               <input type="datetime-local" name="endTime" id="endTime" style="width: 400px;" placeholder="请输入预约课程的结束时间"  class="layui-input">
+           </div>
+       </div>
+	   
+	   <div class="layui-form-item" style="margin-top: 20px;">
+           <label class="layui-form-label">备注：</label>
+           <div class="layui-input-block">
+               <input type="text" name="remark" id="remark" style="width: 400px;" placeholder="请输入备注"  class="layui-input">
+           </div>
+       </div>
+	   
+	   
+	   	 
+       <div class="layui-form-item">
+           <div class="layui-input-block">
+               <button type="button" class="layui-btn"  th:onclick="'javascript:save()'">确认</button>
+               <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+           </div>
+       </div>
+    </form>
+
+</body>
+
+<script>
+
+    function save(){
+        var userId = $("#userId").val(); // 用户编号
+        var coachId = $("#coachId").val(); // 教练编号
+		var beginTime = $("#beginTime").val(); // 私教课程开始时间
+		var endTime = $("#endTime").val(); //私教课程结束时间
+		var remark = $("#remark").val(); // 备注
+	
+		if(userId=="") {
+			alert('请输入用户编号！');
+            parent.layer.msg("请输入用户编号");
+            return;
+		}
+	
+        if(coachId==""){
+			alert('请输入教练编号！');
+            parent.layer.msg("请输入教练编号");
+            return;
+        }
+		
+        if(beginTime==null){
+			alert('请输入私教课程的开始时间！')
+            parent.layer.msg("请输入私教课程的开始时间");
+            return;
+        }
+		
+		if (endTime == null) {
+			alert('请输入私教课程的结束时间！')
+			parent.layer.msg("请输入私教课程的结束时间");
+            return;
+		}
+		
+		if (remark=="" || remark==null) {
+			remark = "无";
+		}
+	
+	
+		
+        $.ajax({
+            url: "/privateCourseBookingAdd",
+            type: "POST",
+            data:{"userId":userId,"coachId":coachId,"beginTime":beginTime,"endTime":endTime,"remark":remark},
+            dataType: "json",
+            success: function(data){
+                if(data==1){
+                    var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);  // 关闭layer
+                    parent.layer.msg("新增成功", {icon: 6});
+                    parent.location.reload();
+                }else{
+                    parent.layer.msg("新增失败", {icon: 5});
+                }
+            }
+        });
+    }
+
+</script>
+</html>
